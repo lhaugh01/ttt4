@@ -68,8 +68,53 @@
         let currentPlayer = Math.random() > 0.5 ? 'X' : 'O'; //randomizes player
         let gameStart = false;
         const turnIndicator = document.querySelector('.turn-indicator');
+        const winIndicator = document.querySelector('.win-indicator');
         const squares = document.querySelectorAll('.square');
         const startGameButton = document.getElementById('start-game');
+
+        function getMoves() {
+            let moves = [];
+            squares.forEach((square, index) => {
+                moves[index] = square.innerText || '-';
+            });
+            return moves;
+        }
+
+        function getWinConditions(moves) {
+            return [
+                moves[0] + moves[1] + moves[2],
+                moves[3] + moves[4] + moves[5],
+                moves[6] + moves[7] + moves[8],
+                moves[0] + moves[3] + moves[6],
+                moves[1] + moves[4] + moves[7],
+                moves[2] + moves[5] + moves[8],
+                moves[0] + moves[4] + moves[8],
+                moves[2] + moves[4] + moves[6]
+            ];
+        }
+
+        function checkGameStatus() {
+            const moves = getMoves();
+            const winConditions = getWinConditions(moves);
+            let winner = null;
+    
+            winConditions.forEach(condition => {
+                if (condition === 'XXX') winner = 'X';
+                if (condition === 'OOO') winner = 'O';
+            });
+    
+            if (winner) {
+                winIndicator.textContent = winner + ' wins!';
+                gameActive = false;
+                return;
+            }
+    
+            if (!moves.includes('-')) {
+                winIndicator.textContent = 'Stalemate!';
+                gameActive = false;
+                return;
+            }
+        }
         
         function selectSquare(event) {
             if (!gameActive) return; //makes it so that it only works when game starts
@@ -80,7 +125,9 @@
             alert('Square number: ' + squareIndex);
             currentPlayer = currentPlayer === 'X' ? 'O' : 'X'; //switches players
             turnIndicator.textContent = currentPlayer + "'s Turn";
+            checkGameStatus();
         }
+        
 
         function startGame() {
             squares.forEach(square => square.textContent = ''); //clears all squares
