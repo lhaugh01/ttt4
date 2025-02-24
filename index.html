@@ -72,16 +72,16 @@
         const squares = document.querySelectorAll('.square');
         const startGameButton = document.getElementById('start-game');
 
-        function getMoves() {
+        function getBoard() {
             let moves = [];
             squares.forEach((square, index) => {
-                moves[index] = square.innerText || '-';
+                moves[index] = square.textContent || '-';
             });
             return moves;
         }
 
         function getWinConditions(moves) {
-            return [
+            return [ // all possible win conditions
                 moves[0] + moves[1] + moves[2],
                 moves[3] + moves[4] + moves[5],
                 moves[6] + moves[7] + moves[8],
@@ -94,7 +94,7 @@
         }
 
         function checkGameStatus() {
-            const moves = getMoves();
+            const moves = getBoard();
             const winConditions = getWinConditions(moves);
             let winner = null;
     
