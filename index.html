@@ -103,14 +103,20 @@
                 if (condition === 'OOO') winner = 'O';
             });
     
-            if (winner) {
-                winIndicator.textContent = winner + ' wins!';
+            if (winner == 'O') {
+                winIndicator.textContent = 'O wins!';
                 gameActive = false;
                 return;
             }
-    
+            
+            if (winner == 'X') {
+                winIndicator.textContent = 'X wins!';
+                gameActive = false;
+                return;
+            }
+            
             if (!moves.includes('-')) {
-                winIndicator.textContent = 'Stalemate!';
+                winIndicator.textContent = 'Stalemate!'; // checks if game is done
                 gameActive = false;
                 return;
             }
